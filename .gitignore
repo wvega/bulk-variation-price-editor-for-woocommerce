@@ -1,0 +1,8 @@
+.DS_Store
+
+# Used to point WP-CLI's path to public_html and be able to manage the
+# development website from the proejct's root directory.
+wp-cli.yml
+
+# WordPress files for development website.
+public_html
