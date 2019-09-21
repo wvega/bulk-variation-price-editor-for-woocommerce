@@ -20,9 +20,28 @@
 
 function bvpe_plugins_loaded() {
 
+	add_action( 'admin_menu', 'bvpe_register_admin_page' );
+
 	add_filter( 'post_row_actions', 'bvpe_register_row_actions', 10, 2 );
 }
 add_action( 'plugins_loaded', 'bvpe_plugins_loaded' );
+
+
+function bvpe_register_admin_page() {
+
+	add_submenu_page(
+		'edit.php?post_type=product',
+		__( 'Editor de precios para variaciones de productos', 'bulk-variation-price-editor-for-woocommerce' ),
+		__( 'Precios', 'bulk-variation-price-editor-for-woocommerce' ),
+		'manage_woocommerce',
+		'bulk-variation-price-editor',
+		'bvpe_render_admin_page'
+	);
+}
+
+
+function bvpe_render_admin_page() {
+}
 
 
 function bvpe_register_row_actions( $actions, $post ) {
