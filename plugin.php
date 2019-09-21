@@ -18,6 +18,11 @@
  */
 
 
+if ( ! defined( 'BULK_VARIATION_PRICE_EDITOR_DIR' ) ) {
+	define( 'BULK_VARIATION_PRICE_EDITOR_DIR', rtrim( plugin_dir_path( __FILE__ ), '/' ) );
+}
+
+
 function bvpe_plugins_loaded() {
 
 	add_action( 'admin_menu', 'bvpe_register_admin_page' );
@@ -41,6 +46,12 @@ function bvpe_register_admin_page() {
 
 
 function bvpe_render_admin_page() {
+
+	ob_start();
+
+	include BULK_VARIATION_PRICE_EDITOR_DIR . '/templates/editor.tpl.php';
+
+	echo ob_get_clean();
 }
 
 
