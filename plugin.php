@@ -47,6 +47,13 @@ function bvpe_register_admin_page() {
 
 function bvpe_render_admin_page() {
 
+	$product = null;
+
+	if ( ! empty( $_REQUEST['post'] ) ) {
+		$product_id = absint( wp_unslash( $_REQUEST['post'] ) );
+		$product    = wc_get_product( $product_id );
+	}
+
 	ob_start();
 
 	include BULK_VARIATION_PRICE_EDITOR_DIR . '/templates/editor.tpl.php';
