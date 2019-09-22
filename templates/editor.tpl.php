@@ -13,7 +13,12 @@
 
 		<form method="post">
 
-			<pre><code><?php print_r( $variations_prices_by_size ); ?></code></pre>
+			<?php foreach ( $price_fields as $field ) : ?>
+
+			<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
+			<input id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['name'] ); ?>" type="number" value="<?php echo esc_attr( $field['value'] ); ?>" />
+
+			<?php endforeach; ?>
 
 			<p class="submit">
 				<input class="button button-primary" type="submit" value="<?php echo esc_attr( 'Actualizar' ); ?>" />

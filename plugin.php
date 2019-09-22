@@ -54,10 +54,10 @@ function bvpe_render_admin_page() {
 		$product    = wc_get_product( $product_id );
 	}
 
-	$variations_prices_by_size = [];
+	$price_fields = [];
 
 	if ( $product ) {
-		$variations_prices_by_size = bvpe_get_variations_prices_by_size( $product );
+		$price_fields = bvpe_generate_price_fields_data( $product );
 	}
 
 	ob_start();
@@ -65,6 +65,32 @@ function bvpe_render_admin_page() {
 	include BULK_VARIATION_PRICE_EDITOR_DIR . '/templates/editor.tpl.php';
 
 	echo ob_get_clean();
+}
+
+
+function bvpe_generate_price_fields_data( $product ) {
+
+	$price_fields  = [];
+
+	$product_id        = $product->get_id();
+	$variations_prices = bvpe_get_variations_prices_by_size( $product );
+	$product_sizes     = get_the_terms( $product_id, 'pa_size' );
+
+	foreach ( $product_sizes as $size ) {
+
+		if ( ! isset( $variations_prices[ $size->slug ]  ) ) {
+			continue;
+		}
+
+		$price_fields[ $size->slug ] = [
+			'id'    => sprintf( 'bvpe-regular-price-%d-%s', $product_id, $size->slug ),
+			'name'  => sprintf( 'bvpe_regular_price[%d][%s]', $product_id, $size->slug ),
+			'label' => $size->name,
+			'value' => max( $variations_prices[ $size->slug ] ),
+		];
+	}
+
+	return $price_fields;
 }
 
 
