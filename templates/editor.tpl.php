@@ -12,9 +12,13 @@
 		<p><?php echo esc_html( __( 'Puedes cambiar el precio para todos los colores de una misma talla modificando los valores en los campos que aparecen más abajo.', 'wss-edit-variations-prices-for-woocommerce', 'bulk-variation-price-editor-for-woocommerce' ) ); ?></p>
 
 		<form method="post">
+
+			<pre><code><?php print_r( $variations_prices_by_size ); ?></code></pre>
+
 			<p class="submit">
 				<input class="button button-primary" type="submit" value="<?php echo esc_attr( 'Actualizar' ); ?>" />
 			</p>
+
 		</form>
 
 	<?php endif; ?>

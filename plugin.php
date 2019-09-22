@@ -54,11 +54,41 @@ function bvpe_render_admin_page() {
 		$product    = wc_get_product( $product_id );
 	}
 
+	$variations_prices_by_size = [];
+
+	if ( $product ) {
+		$variations_prices_by_size = bvpe_get_variations_prices_by_size( $product );
+	}
+
 	ob_start();
 
 	include BULK_VARIATION_PRICE_EDITOR_DIR . '/templates/editor.tpl.php';
 
 	echo ob_get_clean();
+}
+
+
+function bvpe_get_variations_prices_by_size( $product ) {
+
+	$prices_by_size = [];
+
+	foreach ( $product->get_children() as $variation_id ) {
+		$variation = wc_get_product( $variation_id );
+
+		if ( ! $variation instanceof WC_Product_Variation ) {
+			continue;
+		}
+
+		$attributes = $variation->get_variation_attributes();
+
+		if ( ! isset( $attributes['attribute_pa_size'] ) ) {
+			continue;
+		}
+
+		$prices_by_size[ $attributes['attribute_pa_size'] ][] = $variation->get_regular_price();
+	}
+
+	return $prices_by_size;
 }
 
 
