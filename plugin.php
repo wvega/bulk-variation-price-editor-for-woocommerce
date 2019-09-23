@@ -31,6 +31,7 @@ function bvpe_plugins_loaded() {
 
 	add_action( 'admin_enqueue_scripts', 'bvpe_enqueue_admin_scripts' );
 	add_action( 'admin_menu', 'bvpe_register_admin_page' );
+	add_action( 'admin_init', 'bvpe_process_request' );
 
 	add_filter( 'post_row_actions', 'bvpe_register_row_actions', 10, 2 );
 }
@@ -136,6 +137,53 @@ function bvpe_get_variations_prices_by_size( $product ) {
 	}
 
 	return $prices_by_size;
+}
+
+
+function bvpe_process_request() {
+
+	if ( ! isset( $_POST['bvpe_regular_price'] ) || ! is_array( $_POST['bvpe_regular_price'] ) ) {
+		return;
+	}
+
+	$prices_by_product = wp_unslash( $_POST['bvpe_regular_price'] );
+
+	foreach ( $prices_by_product as $product_id => $regular_prices ) {
+
+		$product = wc_get_product( $product_id );
+
+		if ( $product ) {
+			bvpe_update_variation_prices( $product, array_map( 'floatval', $regular_prices ) );
+		}
+	}
+}
+
+
+function bvpe_update_variation_prices( $product, $regular_prices ) {
+
+	foreach ( $product->get_children() as $variation_id ) {
+
+		$variation = wc_get_product( $variation_id );
+
+		if ( ! $variation instanceof WC_Product_Variation ) {
+			continue;
+		}
+
+		$attributes = $variation->get_variation_attributes();
+
+		if ( ! isset( $attributes['attribute_pa_size'] ) ) {
+			continue;
+		}
+
+		$size = $attributes['attribute_pa_size'];
+
+		if ( ! isset( $regular_prices[ $size ] ) ) {
+			continue;
+		}
+
+		$variation->set_regular_price( $regular_prices[ $size ] );
+		$variation->save();
+	}
 }
 
 
