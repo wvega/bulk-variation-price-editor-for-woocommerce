@@ -13,12 +13,18 @@
 
 		<form method="post">
 
+			<div class="bulk-variation-price-editor__row">
+
 			<?php foreach ( $price_fields as $field ) : ?>
 
-			<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
-			<input id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['name'] ); ?>" type="number" value="<?php echo esc_attr( $field['value'] ); ?>" />
+				<div class="bulk-variation-price-editor__column">
+					<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
+					<input id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['name'] ); ?>" type="number" value="<?php echo esc_attr( $field['value'] ); ?>" />
+				</div>
 
 			<?php endforeach; ?>
+
+			</div>
 
 			<p class="submit">
 				<input class="button button-primary" type="submit" value="<?php echo esc_attr( 'Actualizar' ); ?>" />

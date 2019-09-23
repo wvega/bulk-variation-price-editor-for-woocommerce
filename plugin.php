@@ -22,14 +22,35 @@ if ( ! defined( 'BULK_VARIATION_PRICE_EDITOR_DIR' ) ) {
 	define( 'BULK_VARIATION_PRICE_EDITOR_DIR', rtrim( plugin_dir_path( __FILE__ ), '/' ) );
 }
 
+if ( ! defined( 'BULK_VARIATION_PRICE_EDITOR_URL' ) ) {
+	define( 'BULK_VARIATION_PRICE_EDITOR_URL', rtrim( plugin_dir_url( __FILE__ ), '/' ) );
+}
+
 
 function bvpe_plugins_loaded() {
 
+	add_action( 'admin_enqueue_scripts', 'bvpe_enqueue_admin_scripts' );
 	add_action( 'admin_menu', 'bvpe_register_admin_page' );
 
 	add_filter( 'post_row_actions', 'bvpe_register_row_actions', 10, 2 );
 }
 add_action( 'plugins_loaded', 'bvpe_plugins_loaded' );
+
+
+function bvpe_enqueue_admin_scripts() {
+	global $plugin_page;
+
+	if ( 'bulk-variation-price-editor' === $plugin_page ) {
+		wp_register_style(
+			'bulk-variation-price-editor-style',
+			BULK_VARIATION_PRICE_EDITOR_URL . '/assets/editor.css',
+			[],
+			'1.0.0'
+		);
+
+		wp_enqueue_style( 'bulk-variation-price-editor-style' );
+	}
+}
 
 
 function bvpe_register_admin_page() {

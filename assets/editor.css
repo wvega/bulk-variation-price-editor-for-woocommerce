@@ -1,0 +1,16 @@
+.bulk-variation-price-editor__row {
+    display: flex;
+}
+.bulk-variation-price-editor__column {
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+}
+.bulk-variation-price-editor__column label {
+    text-align: center;
+    text-transform: uppercase;
+}
+.bulk-variation-price-editor__column input {
+    text-align: center;
+    width: 80px;
+}
